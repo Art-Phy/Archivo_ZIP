@@ -1,11 +1,6 @@
 ## Bienvenid@s a Tu Archivo ZIP
 
-#### Es un progama simple para practicar Python, para principiantes.
-
-#### Todos hemos usado WinZip en algún momento, independientemente del SO que usemos.
 #### Este programa es de los más básicos ya que Python tiene su propio módulo que nos permite crear nuestro programa zip.
-
-#### Ya que tanto lo hemos usado, que menos que crearnos nosotros nuestro propio programa para comprimir archivos.
 
 #### Hay 3 archivos .py diferentes. Cada uno enseña una manera diferente de hacerlo, pero el resultado es el mismo.
 
