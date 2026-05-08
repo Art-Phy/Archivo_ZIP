@@ -1,101 +1,93 @@
-"""
-=============================
-     ARCHIVO ZIP (v2)
-=============================
 
-Autor: Art-Phy
-Descripción:
-  Programa que permite comprimir uno o varios archivos arrastrándolos 
-  directamente a la terminal. Crea un archivo ZIP en la ruta que el usuario 
-  indique y, al finalizar, ofrece la opción de volver a comprimir o salir.
-
-Mejoras respecto a la versión anterior:
-- Permite arrastrar varios archivos directamente a la terminal.
-- Bucle interactivo para repetir o salir sin cerrar el programa.
-- Limpieza automática de pantalla entre ejecuciones.
-- Validación de rutas y manejo de errores.
-- Código modularizado con funciones descriptivas.
-- Preparado para futuras ampliaciones (colores, GUI, logs...).
-"""
-
+"""Interactive CLI for ZIP file compression"""
 
 import os
-import zipfile
 import shlex
+from pathlib import Path
+
+from archivo_zip.zipper import compress_file
 
 
-def limpiar_rutas_entrada(entrada_usuario):
-    rutas = shlex.split(entrada_usuario)
-    rutas_limpias = [os.path.abspath(ruta) for ruta in rutas]
-    return rutas_limpias
+def parse_input_paths(user_input: str) -> list[Path]:
+    """Parse dragged file paths from terminal input"""
+    return [Path(path).expanduser().resolve() for path in shlex.split(user_input)]
 
 
-def comprimir_archivos(rutas_archivos, ruta_salida):
-    # Comprime uno o varios archivos en un archivo ZIP.
-    if not rutas_archivos:
-        print("⚠️ No se han proporcionado archivos para comprimir.\n")
-        return False
 
-    try:
-        with zipfile.ZipFile(ruta_salida, "w", compression=zipfile.ZIP_DEFLATED) as fzip:
-            alguno_comprimido = False
-            for archivo in rutas_archivos:
-                if os.path.isfile(archivo):
-                    fzip.write(archivo, os.path.basename(archivo))
-                    print(f"✅ Añadido: {archivo}")
-                    alguno_comprimido = True
-                else:
-                    print(f"❌ No se encontró el archivo: {archivo}")
+def ask_user_data() -> tuple[list[Path], Path]:
+    """Ask the user for input files and output ZIP path"""
+    print("=== ZIP FILE COMPRESSOR ===\n")
+    print("Drag one or more files into this window and press Enter:\n")
 
-        if alguno_comprimido:
-            print(f"\n🎉 Compresión completada correctamente.")
-            print(f"📦 Archivo ZIP creado en: {ruta_salida}\n")
-            return True
-        else:
-            print("\n⚠️ Ningún archivo válido fue comprimido.\n")
-            return False
+    input_text = input("Files: ").strip()
+    input_paths = parse_input_paths(input_text)
 
-    except Exception as e:
-        print(f"❌ Error durante la compresión: {e}\n")
-        return False
+    print("\nEnter the output ZIP path")
+    print("Example: /Users/youruser/Desktop/result.zip\n")
 
+    output_text = input("ZIP file: ").strip()
+    output_zip = Path(output_text).expanduser()
 
-def solicitar_datos_usuario():
-    print("=== COMPRESOR DE ARCHIVOS ZIP ===\n")
-    print("👉 Arrastra uno o varios archivos a esta ventana y presiona Enter:\n")
+    if not output_zip.is_absolute():
+        output_zip = Path.cwd() / output_zip
 
-    entrada = input("Archivos: ").strip()
-    rutas_archivos = limpiar_rutas_entrada(entrada)
+    output_zip = output_zip.resolve()
 
-    print("\n📦 Introduce la ruta y nombre del ZIP de salida")
-    print("(por ejemplo: /Users/tuusuario/Desktop/resultado.zip)\n")
-    ruta_zip = input("Archivo ZIP: ").strip()
+    if output_zip.is_dir():
+        output_zip = output_zip / "archive.zip"
 
-    if not os.path.isabs(ruta_zip):
-        ruta_zip = os.path.join(os.getcwd(), ruta_zip)
+    if output_zip.suffix.lower() != ".zip":
+        output_zip = output_zip.with_suffix(".zip")
 
-    return rutas_archivos, ruta_zip
+    return input_paths, output_zip
 
 
-def main():
+
+def run_once() -> None:
+    """Run one compression cycle"""
+    input_paths, output_zip = ask_user_data()
+
+    if not input_paths:
+        print("⚠️ No files were provided,\n")
+        return
+    
+    compressed_files = compress_file(input_paths, output_zip)
+
+    for file_path in compressed_files:
+        print(f"✅ Added: {file_path}")
+
+    missing_files = [path for path in input_paths if not path.is_file()]
+
+    for file_path in missing_files:
+        print(f"❌ File not found: {file_path}")
+
+    if compressed_files:
+        print("\n🎉 Compression completed successfully.")
+        print(f"📦 ZIP file created at: {output_zip}\n")
+    else:
+        print("\n⚠️ No valid files were compressed.\n")
+
+
+
+def main() -> None:
+    """Run the interactive ZIP compressor"""
     while True:
-        rutas_archivos, ruta_zip = solicitar_datos_usuario()
-        exito = comprimir_archivos(rutas_archivos, ruta_zip)
+        run_once()
 
-        # Preguntamos al usuario si desea continuar o salir
         while True:
-            opcion = input("¿Quieres comprimir más archivos? (s/n): ").strip().lower()
-            if opcion == "s":
-                os.system("clear")  # limpia pantalla (Mac/Linux)
+            option = input("Do you want to compress more files? (y/n): ").strip().lower()
+
+            if option == "y":
+                os.system("clear")
                 break
-            elif opcion == "n":
-                print("\n👋 Saliendo del programa. ¡Nos vemos!\n")
+
+            if option == "n":
+                print("\n👋 Exiting the program. See you!\n")
                 return
-            else:
-                print("❌ Venga que no es tan difícil. Escribe 's' para sí o 'n' para no.")
+            
+            print("❌ Please write 'y' for yes or 'n' for no.")
+
 
 
 if __name__ == "__main__":
     main()
-
-
