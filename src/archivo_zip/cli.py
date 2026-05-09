@@ -5,7 +5,7 @@ import os
 import shlex
 from pathlib import Path
 
-from archivo_zip.zipper import compress_file
+from archivo_zip.zipper import compress_files
 
 
 def parse_input_paths(user_input: str) -> list[Path]:
@@ -51,7 +51,7 @@ def run_once() -> None:
         print("⚠️ No files were provided,\n")
         return
     
-    compressed_files = compress_file(input_paths, output_zip)
+    compressed_files = compress_files(input_paths, output_zip)
 
     for file_path in compressed_files:
         print(f"✅ Added: {file_path}")

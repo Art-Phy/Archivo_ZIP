@@ -5,7 +5,7 @@ from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
 
 
-def compress_file(input_paths: list[Path], output_zip: Path) -> list[Path]:
+def compress_files(input_paths: list[Path], output_zip: Path) -> list[Path]:
     """
     Compress valid files into a ZIP archive.
 
