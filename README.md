@@ -1,15 +1,15 @@
 
-### Archivo ZIP 📦
+## Archivo ZIP 📦
 
 <p align="left">
   <img src="https://img.shields.io/badge/python-3.10+-blue.svg" />
   <img src="https://img.shields.io/badge/CLI-ZIP%20Compressor-orange" />
   <img src="https://img.shields.io/badge/Testing-pytest-green" />
-  <img src="https://img.shields.io/badge/Status-v1.2.0%20Stable-success" />
+  <img src="https://img.shields.io/badge/Status-v1.3.0%20Stable-success" />
   <img src="https://img.shields.io/badge/License-MIT-lightgrey" />
 </p>
 
-Herramienta **CLI desarrollada en Python** para comprimir uno o varios archivos en formato ZIP de forma sencilla e interactiva desde terminal.
+Herramienta **CLI desarrollada en Python** para comprimir uno o varios archivos en formato ZIP de forma sencilla, interactiva o mediante argumentos desde terminal.
 
 Ideal como utilidad ligera para automatizar compresión de archivos sin depender de herramientas externas.
 
@@ -21,6 +21,7 @@ Ideal como utilidad ligera para automatizar compresión de archivos sin depender
 
 - Compresión de uno o varios archivos en un único archivo ZIP.
 - Soporte para archivos arrastrados directamente a la terminal.
+- Soporte para ejecución mediante argumentos CLI.
 - Validación automática de rutas.
 - Ignora archivos inexistentes sin interrumpir la ejecución.
 - Creación automática de carpetas de salida si no existen.
@@ -33,7 +34,7 @@ Ideal como utilidad ligera para automatizar compresión de archivos sin depender
 
 Proyecto reorganizado siguiendo estructura modular profesional:
 
-```
+```text
 Archivo_ZIP/
 ├── src/
 │   └── archivo_zip/
@@ -42,6 +43,7 @@ Archivo_ZIP/
 │       ├── cli.py
 │       └── zipper.py
 ├── tests/
+│   ├── test_cli.py
 │   └── test_zipper.py
 ├── CHANGELOG.md
 ├── LICENSE.md
@@ -51,7 +53,7 @@ Archivo_ZIP/
 
 #### Separación de responsabilidades
 
-- `cli.py` → interacción con usuario
+- `cli.py` → interacción con usuario y argumentos CLI
 - `zipper.py` → lógica de compresión
 - `tests/` → pruebas automatizadas
 
@@ -89,7 +91,39 @@ pip install -r requirements.txt
 PYTHONPATH=src python -m archivo_zip
 ```
 
-#### 🧪 Testing
+---
+
+#### Modo CLI con argumentos
+
+Comprimir uno o varios archivos directamente:
+
+```bash
+PYTHONPATH=src python -m archivo_zip file1.pdf file2.txt -o backup.zip
+```
+
+Ejemplo real:
+
+```bash
+PYTHONPATH=src python -m archivo_zip ~/Desktop/document.pdf -o ~/Desktop/my_backup
+```
+
+Resultado:
+
+```text
+my_backup.zip
+```
+
+---
+
+#### Ayuda CLI
+
+```bash
+PYTHONPATH=src python -m archivo_zip --help
+```
+
+---
+
+### 🧪 Testing
 
 Ejecutar tests:
 
@@ -102,9 +136,10 @@ PYTHONPATH=src pytest
 ### 🛠️ Stack Tecnológico
 
 - Lenguaje: Python
-- zipfile
-- pathlib
-- Testing: pytest
+- `zipfile`
+- `pathlib`
+- `argparse`
+- Testing: `pytest`
 
 ---
 
@@ -113,7 +148,7 @@ PYTHONPATH=src pytest
 - [x] Modular project structure
 - [x] Automated testing
 - [x] Package execution support
-- [ ] CLI arguments mode
+- [x] CLI arguments mode
 - [ ] Installable command
 - [ ] Compression progress feedback
 - [ ] Logging support
