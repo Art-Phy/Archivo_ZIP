@@ -5,6 +5,21 @@ Todos los cambios relevantes de este proyecto serán documentados aquí.
 
 ---
 
+### [1.3.0] - 12.05.2026
+
+#### Added
+- CLI arguments mode using `argparse`.
+- Support for compressing files directly via command-line arguments.
+- CLI parser tests.
+- `--help` command support.
+
+#### Changed
+- CLI architecture updated to support dual execution modes:
+  - Interactive mode
+  - Arguments mode
+
+---
+
 ### [1.2.0] - 09.05.2026
 
 #### Added
