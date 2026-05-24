@@ -44,10 +44,12 @@ Archivo_ZIP/
 │       └── zipper.py
 ├── tests/
 │   ├── test_cli.py
+│   ├── test_cli_integration.py
 │   └── test_zipper.py
 ├── CHANGELOG.md
 ├── LICENSE.md
 ├── README.md
+├── pyproject.toml
 └── requirements.txt
 ```
 
