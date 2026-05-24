@@ -5,6 +5,26 @@ Todos los cambios relevantes de este proyecto serán documentados aquí.
 
 ---
 
+# CHANGELOG
+
+Todos los cambios relevantes de este proyecto serán documentados aquí.
+
+---
+
+### [1.4.0] - 24.05.2026
+
+#### Added
+- Installable CLI command via `pyproject.toml`.
+- Editable installation support using `pip install -e .`.
+- Shell command execution via `archivo-zip`.
+- CLI integration tests using subprocess.
+
+#### Changed
+- Project packaging updated to standard Python package format.
+- Improved usability by removing dependency on manual `PYTHONPATH`.
+
+---
+
 ### [1.3.0] - 12.05.2026
 
 #### Added
