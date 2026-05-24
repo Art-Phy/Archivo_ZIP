@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/badge/python-3.10+-blue.svg" />
   <img src="https://img.shields.io/badge/CLI-ZIP%20Compressor-orange" />
   <img src="https://img.shields.io/badge/Testing-pytest-green" />
-  <img src="https://img.shields.io/badge/Status-v1.3.0%20Stable-success" />
+  <img src="https://img.shields.io/badge/Status-v1.4.0%20Stable-success" />
   <img src="https://img.shields.io/badge/License-MIT-lightgrey" />
 </p>
 
@@ -44,10 +44,12 @@ Archivo_ZIP/
 │       └── zipper.py
 ├── tests/
 │   ├── test_cli.py
+│   ├── test_cli_integration.py
 │   └── test_zipper.py
 ├── CHANGELOG.md
 ├── LICENSE.md
 ├── README.md
+├── pyproject.toml
 └── requirements.txt
 ```
 
@@ -78,7 +80,7 @@ source .venv/bin/activate
 Instala dependencias:
 
 ```bash
-pip install -r requirements.txt
+pip install -e
 ```
 
 ---
@@ -88,7 +90,7 @@ pip install -r requirements.txt
 #### Modo interactivo
 
 ```bash
-PYTHONPATH=src python -m archivo_zip
+archivo-zip
 ```
 
 ---
@@ -98,13 +100,13 @@ PYTHONPATH=src python -m archivo_zip
 Comprimir uno o varios archivos directamente:
 
 ```bash
-PYTHONPATH=src python -m archivo_zip file1.pdf file2.txt -o backup.zip
+archivo-zip file1.pdf file2.txt -o backup.zip
 ```
 
 Ejemplo real:
 
 ```bash
-PYTHONPATH=src python -m archivo_zip ~/Desktop/document.pdf -o ~/Desktop/my_backup
+archivo-zip ~/Desktop/document.pdf -o ~/Desktop/my_backup
 ```
 
 Resultado:
@@ -118,7 +120,7 @@ my_backup.zip
 #### Ayuda CLI
 
 ```bash
-PYTHONPATH=src python -m archivo_zip --help
+archivo-zip --help
 ```
 
 ---
@@ -128,8 +130,17 @@ PYTHONPATH=src python -m archivo_zip --help
 Ejecutar tests:
 
 ```bash
-PYTHONPATH=src pytest
+pytest
 ```
+
+---
+
+> [!NOTE]
+> Para desarrollo local también puedes ejecutar:
+>
+> ```bash
+> python -m archivo_zip
+> ```
 
 ---
 
@@ -149,7 +160,7 @@ PYTHONPATH=src pytest
 - [x] Automated testing
 - [x] Package execution support
 - [x] CLI arguments mode
-- [ ] Installable command
+- [x] Installable command
 - [ ] Compression progress feedback
 - [ ] Logging support
 
