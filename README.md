@@ -15,7 +15,7 @@ Ideal como utilidad ligera para automatizar compresión de archivos sin depender
 
 ---
 
-### ✨ Funcionalidades
+### Funcionalidades
 
 #### Core
 
@@ -30,7 +30,7 @@ Ideal como utilidad ligera para automatizar compresión de archivos sin depender
 
 ---
 
-### 🏗️ Project Structure
+### Project Structure
 
 Proyecto reorganizado siguiendo estructura modular profesional:
 
@@ -61,7 +61,7 @@ Archivo_ZIP/
 
 ---
 
-### 🚀 Instalación
+### Instalación
 
 Clona el repositorio:
 
@@ -125,7 +125,7 @@ archivo-zip --help
 
 ---
 
-### 🧪 Testing
+### Testing
 
 Ejecutar tests:
 
@@ -144,7 +144,7 @@ pytest
 
 ---
 
-### 🛠️ Stack Tecnológico
+### Stack Tecnológico
 
 - Lenguaje: Python
 - `zipfile`
