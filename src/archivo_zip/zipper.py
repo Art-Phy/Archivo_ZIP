@@ -31,6 +31,32 @@ def collect_files(input_paths: list[Path], recursive: bool = False) -> list[Path
 
 
 
+def get_archive_name(file_path: Path, input_paths: list[Path], recursive: bool=False) -> str:
+    """
+    Get the internal archive name for a file.
+
+    Args:
+        file_path: File path to include in the ZIP archive.
+        input_paths: Original input paths provided by the user.
+        recursive: Wether recursive directory compression is enabled.
+    
+    Returns:
+        Internal ZIP archive path.
+    """
+    if not recursive:
+        return file_path.name
+    
+    for input_path in input_paths:
+        if input_path.is_dir():
+            try:
+                return str(file_path.relative_to(input_path.parent))
+            except ValueError:
+                continue
+
+    return file_path.name
+
+
+
 def compress_files(input_paths: list[Path], output_zip: Path, recursive: bool = False) -> list[Path]:
     """
     Compress valid files into a ZIP archive.
@@ -50,8 +76,7 @@ def compress_files(input_paths: list[Path], output_zip: Path, recursive: bool = 
 
     with ZipFile(output_zip, "w", compression=ZIP_DEFLATED) as zip_file:
         for file_path in files_to_compress:
-            arcname = file_path.name
-            zip_file.write(file_path, arcname=arcname)
+            zip_file.write(file_path, arcname=get_archive_name(file_path, input_paths, recursive=recursive),)
             compressed_files.append(file_path)
 
     return compressed_files
