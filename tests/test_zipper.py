@@ -2,7 +2,7 @@
 from pathlib import Path
 from zipfile import ZipFile
 
-from archivo_zip.zipper import compress_files
+from archivo_zip.zipper import collect_files, compress_files, get_archive_name
 
 
 
@@ -68,3 +68,72 @@ def test_create_output_directory_if_missing(tmp_path: Path) -> None:
 
     assert compressed_files == [source_file]
     assert output_zip.exists()
+
+
+
+def test_collect_files_recursive(tmp_path: Path) -> None:
+    folder = tmp_path / "docs"
+    folder.mkdir()
+
+    file_one = folder / "one.txt"
+    file_two = folder / "two.txt"
+
+    file_one.write_text("One", encoding="utf-8")
+    file_two.write_text("Two", encoding="utf-8")
+
+    collected = collect_files([folder], recursive=True)
+
+    assert sorted(file.name for file in collected) == ["one.txt", "two.txt"]
+
+
+
+def test_collect_files_non_recursive_ignores_directory(tmp_path: Path) -> None:
+    folder = tmp_path / "docs"
+    folder.mkdir()
+
+    collected = collect_files([folder], recursive=False)
+
+    assert collected == []
+
+
+
+def test_get_archive_name_recursive(tmp_path: Path) -> None:
+    root = tmp_path / "project"
+    nested = root / "docs"
+
+    nested.mkdir(parents=True)
+
+    file_path = nested / "report.txt"
+    file_path.write_text("test", encoding="utf-8")
+
+    archive_name = get_archive_name(file_path, [root], recursive=True)
+
+    assert archive_name == "project/docs/report.txt"
+
+
+
+def test_compress_recursive_directory_preserves_structure(tmp_path: Path) -> None:
+    root = tmp_path / "project"
+    docs = root / "docs"
+    invoices = root / "invoices"
+
+    docs.mkdir(parents=True)
+    invoices.mkdir(parents=True)
+
+    file_one = docs / "report.txt"
+    file_two = invoices / "report.txt"
+
+    file_one.write_text("docs", encoding="utf-8")
+    file_two.write_text("invoices", encoding="utf-8")
+
+    output_zip = tmp_path / "backup.zip"
+
+    compress_files([root], output_zip, recursive=True)
+
+    with ZipFile(output_zip, "r") as zip_file:
+        contents = sorted(zip_file.namelist())
+
+    assert contents == [
+        "project/docs/report.txt",
+        "project/invoices/report.txt",
+    ]
