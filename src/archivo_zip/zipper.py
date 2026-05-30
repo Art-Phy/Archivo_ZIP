@@ -3,6 +3,7 @@
 
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
+from tqdm import tqdm
 
 
 
@@ -75,7 +76,9 @@ def compress_files(input_paths: list[Path], output_zip: Path, recursive: bool = 
     output_zip.parent.mkdir(parents=True, exist_ok=True)
 
     with ZipFile(output_zip, "w", compression=ZIP_DEFLATED) as zip_file:
-        for file_path in files_to_compress:
+        for file_path in tqdm(
+            files_to_compress, desc="Compressing", unit="file",
+        ):  
             zip_file.write(file_path, arcname=get_archive_name(file_path, input_paths, recursive=recursive),)
             compressed_files.append(file_path)
 
