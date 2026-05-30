@@ -4,10 +4,27 @@
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
 from tqdm import tqdm
+from fnmatch import fnmatch
 
 
 
-def collect_files(input_paths: list[Path], recursive: bool = False) -> list[Path]:
+def should_exclude(file_path: Path, patterns: list[str] | None = None) -> bool:
+    """Check whether a file should be excluded"""
+    if not patterns:
+        return False
+    
+    for pattern in patterns:
+        if fnmatch(file_path.name, pattern):
+            return True
+        
+        if fnmatch(str(file_path), pattern):
+            return True
+        
+    return False
+
+
+
+def collect_files(input_paths: list[Path], recursive: bool = False, exclude_patterns: list[str] | None = None) -> list[Path]:
     """
     Collect valid files from input paths.
 
@@ -22,11 +39,18 @@ def collect_files(input_paths: list[Path], recursive: bool = False) -> list[Path
 
     for path in input_paths:
         if path.is_file():
-            collected_files.append(path)
+            if not should_exclude(path, exclude_patterns):
+                collected_files.append(path)
             continue
 
         if path.is_dir() and recursive:
-            collected_files.extend(file for file in path.rglob("*") if file.is_file())
+            for file in path.rglob("*"):
+                if not file.is_file():
+                    continue
+                if should_exclude(file, exclude_patterns):
+                    continue
+
+                collected_files.append(file)
 
     return collected_files
 
@@ -58,7 +82,7 @@ def get_archive_name(file_path: Path, input_paths: list[Path], recursive: bool=F
 
 
 
-def compress_files(input_paths: list[Path], output_zip: Path, recursive: bool = False) -> list[Path]:
+def compress_files(input_paths: list[Path], output_zip: Path, recursive: bool = False, exclude_patterns: list[str] | None = None) -> list[Path]:
     """
     Compress valid files into a ZIP archive.
 
@@ -71,7 +95,7 @@ def compress_files(input_paths: list[Path], output_zip: Path, recursive: bool = 
         List of files successfully added to the ZIP.
     """
     compressed_files: list[Path] = []
-    files_to_compress = collect_files(input_paths, recursive=recursive)
+    files_to_compress = collect_files(input_paths, recursive=recursive, exclude_patterns=exclude_patterns)
 
     output_zip.parent.mkdir(parents=True, exist_ok=True)
 
