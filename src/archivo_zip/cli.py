@@ -98,12 +98,12 @@ def run_interactive_mode() -> None:
 
 
 
-def run_cli_mode(files: list[str], output: str, recursive: bool = False) -> None:
+def run_cli_mode(files: list[str], output: str, recursive: bool = False, exclude_patterns: list[str] | None = None) -> None:
     """Run CLI argument mode."""
     input_paths = [Path(file).expanduser().resolve() for file in files]
     output_zip = normalize_output_zip(output)
 
-    compressed_files = compress_files(input_paths, output_zip, recursive=recursive)
+    compressed_files = compress_files(input_paths, output_zip, recursive=recursive, exclude_patterns=exclude_patterns)
     print_results(input_paths, compressed_files, output_zip)
 
 
@@ -133,6 +133,13 @@ def build_parser() -> argparse.ArgumentParser:
         help="Compress files inside directories recursively.",
     )
 
+    parser.add_argument(
+        "--exclude",
+        nargs="*",
+        default=[],
+        help="Exclude files matching patterns."
+    )
+
     return parser
 
 
@@ -143,7 +150,7 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.files and args.output:
-        run_cli_mode(args.files, args.output, recursive=args.recursive)
+        run_cli_mode(args.files, args.output, recursive=args.recursive, exclude_patterns=args.exclude)
     else:
         run_interactive_mode()
 
