@@ -178,11 +178,11 @@ pytest
 ---
 
 > [!NOTE]
-> Para desarrollo local también puedes ejecutar:
+> ###### Para desarrollo local también puedes ejecutar:
 >
-> ```bash
-> python -m archivo_zip
-> ```
+> ###### ```bash
+> ###### python -m archivo_zip
+> ###### ```
 
 ---
 
