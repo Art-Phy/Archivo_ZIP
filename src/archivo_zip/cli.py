@@ -98,12 +98,12 @@ def run_interactive_mode() -> None:
 
 
 
-def run_cli_mode(files: list[str], output: str, recursive: bool = False, exclude_patterns: list[str] | None = None) -> None:
+def run_cli_mode(files: list[str], output: str, recursive: bool = False, exclude_patterns: list[str] | None = None, use_default_excludes: bool = True) -> None:
     """Run CLI argument mode."""
     input_paths = [Path(file).expanduser().resolve() for file in files]
     output_zip = normalize_output_zip(output)
 
-    compressed_files = compress_files(input_paths, output_zip, recursive=recursive, exclude_patterns=exclude_patterns)
+    compressed_files = compress_files(input_paths, output_zip, recursive=recursive, exclude_patterns=exclude_patterns, use_default_excludes=use_default_excludes)
     print_results(input_paths, compressed_files, output_zip)
 
 
@@ -140,6 +140,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="Exclude files matching patterns."
     )
 
+    parser.add_argument(
+        "--no-default-excludes",
+        action="store_true",
+        help="Disable built-in exclusion patterns."
+    )
+
     return parser
 
 
@@ -150,7 +156,7 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.files and args.output:
-        run_cli_mode(args.files, args.output, recursive=args.recursive, exclude_patterns=args.exclude)
+        run_cli_mode(args.files, args.output, recursive=args.recursive, exclude_patterns=args.exclude, use_default_excludes=not args.no_default_excludes)
     else:
         run_interactive_mode()
 

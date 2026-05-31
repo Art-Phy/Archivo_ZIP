@@ -7,6 +7,29 @@ from tqdm import tqdm
 from fnmatch import fnmatch
 
 
+DEFAULT_EXCLUDE_PATTERNS = [
+    ".DS_Store",
+    "*.pyc",
+    "__pycache__",
+    ".git",
+    ".pytest_cache",
+]
+
+
+
+def build_exclude_patterns(exclude_patterns: list[str] | None = None, use_defaults: bool = True) -> list[str]:
+    """Build final exclusion pattern list"""
+    patterns: list[str] = []
+
+    if use_defaults:
+        patterns.extend(DEFAULT_EXCLUDE_PATTERNS)
+
+    if exclude_patterns:
+        patterns.extend(exclude_patterns)
+
+    return patterns
+
+
 
 def should_exclude(file_path: Path, patterns: list[str] | None = None) -> bool:
     """Check whether a file should be excluded"""
@@ -82,7 +105,7 @@ def get_archive_name(file_path: Path, input_paths: list[Path], recursive: bool=F
 
 
 
-def compress_files(input_paths: list[Path], output_zip: Path, recursive: bool = False, exclude_patterns: list[str] | None = None) -> list[Path]:
+def compress_files(input_paths: list[Path], output_zip: Path, recursive: bool = False, exclude_patterns: list[str] | None = None, use_default_excludes: bool = True) -> list[Path]:
     """
     Compress valid files into a ZIP archive.
 
@@ -95,6 +118,8 @@ def compress_files(input_paths: list[Path], output_zip: Path, recursive: bool = 
         List of files successfully added to the ZIP.
     """
     compressed_files: list[Path] = []
+    
+    patterns = build_exclude_patterns(exclude_patterns, use_defaults=use_default_excludes)
     files_to_compress = collect_files(input_paths, recursive=recursive, exclude_patterns=exclude_patterns)
 
     output_zip.parent.mkdir(parents=True, exist_ok=True)
