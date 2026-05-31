@@ -3,3 +3,5 @@
     import os
     import zipfile
     import shlex
+
+tqdm

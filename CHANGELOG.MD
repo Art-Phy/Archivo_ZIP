@@ -5,9 +5,19 @@ Todos los cambios relevantes de este proyecto serán documentados aquí.
 
 ---
 
-# CHANGELOG
+### [1.5.0] - 31.05.2026
 
-Todos los cambios relevantes de este proyecto serán documentados aquí.
+#### Added
+- Recursive directory compression.
+- Directory structure preservation inside ZIP archives.
+- Custom exclusion patterns via `--exclude`.
+- Default exclusion patterns.
+- `--no-default-excludes` option.
+- Compression progress bar using `tqdm`.
+
+#### Changed
+- Improved archive creation workflow.
+- Improved backup-oriented usage.
 
 ---
 
