@@ -1,11 +1,11 @@
 
-## Archivo ZIP 📦
+## Archivo ZIP
 
 <p align="left">
   <img src="https://img.shields.io/badge/python-3.10+-blue.svg" />
   <img src="https://img.shields.io/badge/CLI-ZIP%20Compressor-orange" />
   <img src="https://img.shields.io/badge/Testing-pytest-green" />
-  <img src="https://img.shields.io/badge/Status-v1.4.0%20Stable-success" />
+  <img src="https://img.shields.io/badge/Status-v1.5.0%20Stable-success" />
   <img src="https://img.shields.io/badge/License-MIT-lightgrey" />
 </p>
 
@@ -22,6 +22,11 @@ Ideal como utilidad ligera para automatizar compresión de archivos sin depender
 - Compresión de uno o varios archivos en un único archivo ZIP.
 - Soporte para archivos arrastrados directamente a la terminal.
 - Soporte para ejecución mediante argumentos CLI.
+- Compresión recursiva de directorios mediante `--recursive`.
+- Preservación de la estructura de carpetas dentro del ZIP.
+- Exclusión personalizada de archivos mediante `--exclude`.
+- Exclusiones inteligentes por defecto para archivos temporales y de sistema.
+- Barra de progreso durante la compresión mediante `tqdm`.
 - Validación automática de rutas.
 - Ignora archivos inexistentes sin interrumpir la ejecución.
 - Creación automática de carpetas de salida si no existen.
@@ -80,17 +85,54 @@ source .venv/bin/activate
 Instala dependencias:
 
 ```bash
-pip install -e
+pip install -e .
 ```
 
 ---
 
-### ▶️ Uso
+### Uso
 
 #### Modo interactivo
 
 ```bash
 archivo-zip
+```
+#### Compresión recursiva
+
+```bash
+archivo-zip my_project -o backup.zip --recursive
+```
+
+---
+
+#### Exclusión de archivos
+
+```bash
+archivo-zip my_project \
+  -o backup.zip \
+  --recursive \
+  --exclude "*.log" "*.tmp"
+```
+
+---
+
+#### Desactivar exclusiones por defecto
+
+```bash
+archivo-zip my_project \
+  -o backup.zip \
+  --recursive \
+  --no-default-excludes
+```
+
+Elementos excluídos por  defecto
+
+```
+DS_Store
+*.pyc
+__pycache__
+.git
+.pytest_cache
 ```
 
 ---
@@ -151,17 +193,19 @@ pytest
 - `pathlib`
 - `argparse`
 - Testing: `pytest`
+- `tqdm`
 
 ---
 
-### 📌 Roadmap
+### Roadmap
 
 - [x] Modular project structure
 - [x] Automated testing
 - [x] Package execution support
 - [x] CLI arguments mode
 - [x] Installable command
-- [ ] Compression progress feedback
+- [x] Compression progress feedback
+- [ ] Friendly interactive mode
 - [ ] Logging support
 
 ---
