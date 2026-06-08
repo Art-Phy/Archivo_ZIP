@@ -7,6 +7,7 @@ import shlex
 from pathlib import Path
 
 from archivo_zip.zipper import compress_files
+from archivo_zip.interactive import show_main_menu
 
 
 
