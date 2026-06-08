@@ -24,14 +24,31 @@ def show_main_menu() -> str:
 
 
 
-def as_recursive_option() -> bool:
+def ask_yes_no(question: str) -> bool:
+    """Ask a yes/no question and return the selected answer"""
+    while True:
+        answer = input(f"{question} (y/n): ").strip().lower()
+
+        if answer == "y":
+            return True
+        
+        if answer == "n":
+            return False
+        
+        print("Please write 'y' for yes or 'n' for no.\n")
+
+
+
+def ask_recursive_option() -> bool:
     """Ask whether recursive compression should be enable"""
-    raise NotImplementedError
+    return ask_yes_no("Included subfolders?")
+
 
 
 def ask_default_excludes() -> bool:
     """Ask whether default exclusions should be enable"""
-    raise NotImplementedError
+    return ask_yes_no("Use recommended exclusions?")
+
 
 
 def show_compression_summary() -> None:
