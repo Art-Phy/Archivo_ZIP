@@ -1,6 +1,11 @@
 
 """Interactive user interface helpers."""
 
+import shlex
+from pathlib import Path
+
+
+
 def show_main_menu() -> str:
     """Display the main interactive menu and return the selected option"""
     valid_options = {"1", "2", "3", "4"}
@@ -54,3 +59,42 @@ def ask_default_excludes() -> bool:
 def show_compression_summary() -> None:
     """Display a compression summart before execution"""
     raise NotImplementedError
+
+
+
+def ask_single_path(question: str) -> Path:
+    """Ask the user for a single file or folder path"""
+    while True:
+        user_input = input(f"{question}: ").strip()
+
+        if not user_input:
+            print("Path cannot be empty.\n")
+            continue
+
+        return Path(user_input).expanduser().resolve()
+    
+
+
+def ask_multiple_files() -> list[Path]:
+    """Ask the user for multiple files paths"""
+    while True:
+        user_input = input("Drag or write one or more files: ").strip()
+
+        if not user_input:
+            print("You must provide at least one file.\n")
+            continue
+
+        return [Path(path).expanduser().resolve() for path in shlex.split(user_input)]
+    
+
+
+def ask_output_zip() -> Path:
+    """Ask the user for the output ZIP path"""
+    while True:
+        user_input = input("Output ZIP path: ").strip()
+
+        if not user_input:
+            print("Output path cannot be empty.\n")
+            continue
+
+        return Path(user_input).expanduser()

@@ -7,7 +7,14 @@ import shlex
 from pathlib import Path
 
 from archivo_zip.zipper import compress_files
-from archivo_zip.interactive import show_main_menu
+from archivo_zip.interactive import (
+    ask_default_excludes,
+    ask_multiple_files,
+    ask_output_zip,
+    ask_recursive_option,
+    ask_single_path,
+    show_main_menu,
+)
 
 
 
@@ -62,10 +69,10 @@ def print_results(input_paths: list[Path], compressed_files: list[Path], output_
     missing_files = [path for path in input_paths if not path.is_file()]
 
     for file_path in missing_files:
-        print(f"❌ File not found: {file_path}")
+        print(f"File not found: {file_path}")
 
     if compressed_files:
-        print("\n🎉 Compression completed successfully.")
+        print("\nCompression completed successfully.")
         print(f"📦 ZIP file created at: {output_zip}\n")
     else:
         print("\n⚠️ No valid files were compressed.\n")
@@ -74,28 +81,36 @@ def print_results(input_paths: list[Path], compressed_files: list[Path], output_
 
 def run_interactive_mode() -> None:
     """Run interactive mode."""
-    while True:
-        input_paths, output_zip = ask_user_data()
+    option = show_main_menu()
 
-        if not input_paths:
-            print("⚠️ No files were provided.\n")
-            continue
+    if option == "4":
+        print("\nExiting the program. See you!\n")
+        return
+    
+    recursive = False
+    use_default_excludes = True
 
-        compressed_files = compress_files(input_paths, output_zip)
-        print_results(input_paths, compressed_files, output_zip)
+    if option == "1":
+        input_paths = [ask_single_path("File path")]
 
-        while True:
-            option = input("Do you want to compress more files? (y/n): ").strip().lower()
+    elif option == "2":
+        input_paths = [ask_single_path("Folder path")]
+        recursive = ask_recursive_option()
+        use_default_excludes = ask_default_excludes()
 
-            if option == "y":
-                os.system("clear")
-                break
+    elif option == "3":
+        input_paths = ask_multiple_files()
 
-            if option == "n":
-                print("\n👋 Exiting the program. See you!\n")
-                return
+    output_zip = normalize_output_zip(str(ask_output_zip()))
 
-            print("❌ Please write 'y' for yes or 'n' for no.")
+    compressed_files = compress_files(
+        input_paths,
+        output_zip,
+        recursive=recursive,
+        use_default_excludes=use_default_excludes,
+    )
+
+    print_results(input_paths, compressed_files, output_zip)
 
 
 
