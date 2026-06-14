@@ -14,6 +14,7 @@ from archivo_zip.interactive import (
     ask_recursive_option,
     ask_single_path,
     show_main_menu,
+    ask_yes_no,
 )
 
 
@@ -79,13 +80,12 @@ def print_results(input_paths: list[Path], compressed_files: list[Path], output_
 
 
 
-def run_interactive_mode() -> None:
+def run_interactive_mode() -> bool:
     """Run interactive mode."""
     option = show_main_menu()
 
     if option == "4":
-        print("\nExiting the program. See you!\n")
-        return
+        return False
     
     recursive = False
     use_default_excludes = True
@@ -111,6 +111,7 @@ def run_interactive_mode() -> None:
     )
 
     print_results(input_paths, compressed_files, output_zip)
+    return True
 
 
 
@@ -174,7 +175,16 @@ def main() -> None:
     if args.files and args.output:
         run_cli_mode(args.files, args.output, recursive=args.recursive, exclude_patterns=args.exclude, use_default_excludes=not args.no_default_excludes)
     else:
-        run_interactive_mode()
+        while True:
+            continue_program = run_interactive_mode()
+
+            if not continue_program:
+                print("\nExiting the program. See you!\n")
+                break
+
+            if not ask_yes_no("Compress something else?"):
+                print("\nExiting the program. See you!\n")
+                break
 
 
 
