@@ -56,9 +56,24 @@ def ask_default_excludes() -> bool:
 
 
 
-def show_compression_summary() -> None:
-    """Display a compression summart before execution"""
-    raise NotImplementedError
+def show_compression_summary(
+    source: str,
+    output: str,
+    recursive: bool,
+    default_excludes: bool,
+) -> None:
+    """Display a compression summary."""
+
+    print("\n=================================")
+    print("       Compression Summary")
+    print("=================================\n")
+
+    print(f"Source: {source}")
+    print(f"Output: {output}")
+    print(f"Recursive: {'Yes' if recursive else 'No'}")
+    print(f"Default exclusions: {'Yes' if default_excludes else 'No'}")
+
+    print("\n=================================\n")
 
 
 
