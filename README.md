@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/badge/python-3.10+-blue.svg" />
   <img src="https://img.shields.io/badge/CLI-ZIP%20Compressor-orange" />
   <img src="https://img.shields.io/badge/Testing-pytest-green" />
-  <img src="https://img.shields.io/badge/Status-v1.5.0%20Stable-success" />
+  <img src="https://img.shields.io/badge/Status-v1.6.0%20Stable-success" />
   <img src="https://img.shields.io/badge/License-MIT-lightgrey" />
 </p>
 
@@ -32,6 +32,9 @@ Ideal como utilidad ligera para automatizar compresión de archivos sin depender
 - Creación automática de carpetas de salida si no existen.
 - Añade automáticamente extensión `.zip` si falta.
 - Si se proporciona una carpeta como destino, genera automáticamente `archive.zip`.
+- Modo interactivo guiado mediante menús.
+- Resumen previo antes de ejecutar la compresión.
+- Posibilidad de realizar múltiples compresiones sin reiniciar el programa.
 
 ---
 
@@ -46,10 +49,12 @@ Archivo_ZIP/
 │       ├── __init__.py
 │       ├── __main__.py
 │       ├── cli.py
+│       ├── interactive.py
 │       └── zipper.py
 ├── tests/
 │   ├── test_cli.py
 │   ├── test_cli_integration.py
+│   ├── test_interactive.py
 │   └── test_zipper.py
 ├── CHANGELOG.md
 ├── LICENSE.md
@@ -60,7 +65,8 @@ Archivo_ZIP/
 
 #### Separación de responsabilidades
 
-- `cli.py` → interacción con usuario y argumentos CLI
+- `cli.py` → ejecución principal y argumentos CLI
+- `interactive.py` → interfaz interactiva guiada
 - `zipper.py` → lógica de compresión
 - `tests/` → pruebas automatizadas
 
@@ -92,11 +98,19 @@ pip install -e .
 
 ### Uso
 
-#### Modo interactivo
+#### Modo interactivo guiado
 
 ```bash
 archivo-zip
 ```
+Permite seleccionar mediante menús:
+
+- Archivo individual
+- Carpeta completa
+- Múltiples archivos
+
+Además permite configurar opciones de compresión sin necesidad de conocer los argumentos CLI.
+
 #### Compresión recursiva
 
 ```bash
@@ -205,8 +219,9 @@ pytest
 - [x] CLI arguments mode
 - [x] Installable command
 - [x] Compression progress feedback
-- [ ] Friendly interactive mode
+- [x] Friendly interactive mode
 - [ ] Logging support
+- [ ] Compression confirmation before execution
 
 ---
 

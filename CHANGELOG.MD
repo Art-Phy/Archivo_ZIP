@@ -5,6 +5,27 @@ Todos los cambios relevantes de este proyecto serán documentados aquí.
 
 ---
 
+### [1.6.0] - 16.06.2026
+
+#### Added
+- Friendly interactive mode with guided menus.
+- Interactive selection for:
+  - Single file compression.
+  - Directory compression.
+  - Multiple file compression.
+- Interactive configuration of recursive compression.
+- Interactive configuration of default exclusions.
+- Compression summary before execution.
+- Interactive session loop for multiple compressions.
+- Dedicated `interactive.py` module.
+- Automated tests for interactive functionality.
+
+#### Changed
+- Improved user experience for non-technical users.
+- Refactored architecture to separate interactive UI from CLI logic.
+
+---
+
 ### [1.5.0] - 31.05.2026
 
 #### Added
