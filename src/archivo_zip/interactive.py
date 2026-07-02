@@ -100,16 +100,35 @@ def ask_multiple_files() -> list[Path]:
             continue
 
         return [Path(path).expanduser().resolve() for path in shlex.split(user_input)]
-    
+   
 
 
-def ask_output_zip() -> Path:
+def get_default_output_zip(input_paths: list[Path]) -> Path: 
+    """Generate a default ZIP filename"""
+    if len(input_paths) == 1:
+        source = input_paths[0]
+        
+        if source.is_file():
+            return source.with_suffix(."zip") 
+        
+        return source.parent / f"{source.name}.zip"
+            
+    return Path.cwd() / "archive.zip"
+        
+
+
+def ask_output_zip(input_paths: list[Path]) -> Path:
     """Ask the user for the output ZIP path"""
-    while True:
-        user_input = input("Output ZIP path: ").strip()
-
-        if not user_input:
-            print("Output path cannot be empty.\n")
-            continue
-
-        return Path(user_input).expanduser()
+    
+    default_output = get_default_output_zip(input_paths)
+    
+    print("\nOutput ZIP path")
+    print("(Press enter to use the default)\n")
+    print(f"Default: {default_output}\n")
+    
+    user_input = input("< ").strip()
+    
+    if not user input:
+        return default_output
+        
+    return Path(user_input).expanduser()

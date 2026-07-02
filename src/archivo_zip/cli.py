@@ -101,7 +101,11 @@ def run_interactive_mode() -> bool:
     elif option == "3":
         input_paths = ask_multiple_files()
 
-    output_zip = normalize_output_zip(str(ask_output_zip()))
+    output_zip = normalize_output_zip(
+        str(
+            ask_output_zip(input_paths)
+        )
+    )
 
     compressed_files = compress_files(
         input_paths,
