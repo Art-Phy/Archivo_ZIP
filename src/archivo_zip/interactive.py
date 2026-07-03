@@ -103,32 +103,33 @@ def ask_multiple_files() -> list[Path]:
    
 
 
-def get_default_output_zip(input_paths: list[Path]) -> Path: 
-    """Generate a default ZIP filename"""
+def get_default_output_zip(input_paths: list[Path]) -> Path:
+    """Generate a default ZIP filename."""
+
     if len(input_paths) == 1:
         source = input_paths[0]
-        
+
         if source.is_file():
-            return source.with_suffix(."zip") 
-        
+            return source.with_suffix(".zip")
+
         return source.parent / f"{source.name}.zip"
-            
+
     return Path.cwd() / "archive.zip"
         
 
 
 def ask_output_zip(input_paths: list[Path]) -> Path:
-    """Ask the user for the output ZIP path"""
-    
+    """Ask the user for the output ZIP path."""
+
     default_output = get_default_output_zip(input_paths)
-    
+
     print("\nOutput ZIP path")
-    print("(Press enter to use the default)\n")
+    print("(Press Enter to use the default)\n")
     print(f"Default: {default_output}\n")
-    
-    user_input = input("< ").strip()
-    
-    if not user input:
+
+    user_input = input("> ").strip()
+
+    if not user_input:
         return default_output
-        
+
     return Path(user_input).expanduser()
