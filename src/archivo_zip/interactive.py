@@ -56,6 +56,12 @@ def ask_default_excludes() -> bool:
 
 
 
+def confirm_compression() -> bool:
+    """Ask the user to confirm the compression"""
+    return ask_yes_no("Start compression?")
+
+
+
 def show_compression_summary(
     source: str,
     output: str,

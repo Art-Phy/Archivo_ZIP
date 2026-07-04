@@ -13,8 +13,10 @@ from archivo_zip.interactive import (
     ask_output_zip,
     ask_recursive_option,
     ask_single_path,
-    show_main_menu,
     ask_yes_no,
+    confirm_compression,
+    show_compression_summary,
+    show_main_menu,
 )
 
 
@@ -106,6 +108,17 @@ def run_interactive_mode() -> bool:
             ask_output_zip(input_paths)
         )
     )
+
+    show_compression_summary(
+        source=", ".join(str(path) for path in input_paths),
+        output=str(output_zip),
+        recursive=recursive,
+        default_excludes=use_default_excludes,
+    )
+
+    if not confirm_compression():
+        print("\nCompression cancelled.\n")
+        return True
 
     compressed_files = compress_files(
         input_paths,

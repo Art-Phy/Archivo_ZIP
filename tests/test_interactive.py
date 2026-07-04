@@ -5,6 +5,7 @@ from archivo_zip.interactive import (
     ask_yes_no,
     show_compression_summary,
     show_main_menu,
+    confirm_compression,
 )
 
 
@@ -38,3 +39,13 @@ def test_show_compression_summary(capsys) -> None:
     assert "Output: backup.zip" in captured.out
     assert "Recursive: Yes" in captured.out
     assert "Default exclusions: Yes" in captured.out
+
+
+def test_confirm_compression_accepts_yes() -> None:
+    with patch("builtins.input", return_value="y"):
+        assert confirm_compression() is True
+
+
+def test_confirm_compression_accepts_no() -> None:
+    with patch("builtins.input", return_value="n"):
+        assert confirm_compression() is False
