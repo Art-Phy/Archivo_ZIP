@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "archivo-zip"
-version = "1.6.0"
+version = "1.7.0"
 description = "CLI tool to compress one or more files into a ZIP archive."
 readme = "README.md"
 requires-python = ">=3.10"
