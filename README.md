@@ -110,7 +110,7 @@ Permite seleccionar mediante menús:
 - Archivo individual
 - Carpeta completa
 - Múltiples archivos
-- Además permite configurar opciones de compresión sin necesidad de conocer los argumentos CLI
+- Permite configurar opciones de compresión sin necesidad de conocer los argumentos CLI
 
 Durante el proceso el asistente permite:
 
