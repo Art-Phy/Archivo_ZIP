@@ -5,6 +5,20 @@ Todos los cambios relevantes de este proyecto serán documentados aquí.
 
 ---
 
+### [1.7.0] - 10.07.2026
+
+#### Added
+- Automatic output ZIP filename generation in interactive mode.
+- Compression confirmation before execution.
+- Automatic default ZIP naming based on the selected file or directory.
+
+#### Changed
+- Improved interactive workflow.
+- Reduced required user input.
+- Enhanced user experience with smarter defaults.
+
+---
+
 ### [1.6.0] - 16.06.2026
 
 #### Added

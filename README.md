@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/badge/python-3.10+-blue.svg" />
   <img src="https://img.shields.io/badge/CLI-ZIP%20Compressor-orange" />
   <img src="https://img.shields.io/badge/Testing-pytest-green" />
-  <img src="https://img.shields.io/badge/Status-v1.6.0%20Stable-success" />
+  <img src="https://img.shields.io/badge/Status-v1.7.0%20Stable-success" />
   <img src="https://img.shields.io/badge/License-MIT-lightgrey" />
 </p>
 
@@ -35,6 +35,8 @@ Ideal como utilidad ligera para automatizar compresión de archivos sin depender
 - Modo interactivo guiado mediante menús.
 - Resumen previo antes de ejecutar la compresión.
 - Posibilidad de realizar múltiples compresiones sin reiniciar el programa.
+- Generación automática del nombre del archivo ZIP cuando no se especifica uno.
+- Confirmación antes de iniciar la compresión.
 
 ---
 
@@ -108,8 +110,15 @@ Permite seleccionar mediante menús:
 - Archivo individual
 - Carpeta completa
 - Múltiples archivos
+- Permite configurar opciones de compresión sin necesidad de conocer los argumentos CLI
 
-Además permite configurar opciones de compresión sin necesidad de conocer los argumentos CLI.
+Durante el proceso el asistente permite:
+
+- Confirgurar las opciones de comprensión
+- Utilizar automáticamente un nombre de archivo ZIP por defecto
+- Revisar un resumen antes de comenzar la compresión
+- Confirmar o cancelar la operación
+- Realizar múltiples compresiones sin reiniciar la aplicación
 
 #### Compresión recursiva
 
@@ -220,8 +229,10 @@ pytest
 - [x] Installable command
 - [x] Compression progress feedback
 - [x] Friendly interactive mode
+- [x] Compression confirmation before execution
 - [ ] Logging support
-- [ ] Compression confirmation before execution
+- [ ] Compression profiles
+- [ ] Improve terminal UI
 
 ---
 
