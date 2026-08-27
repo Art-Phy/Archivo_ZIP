@@ -1,0 +1,35 @@
+
+from archivo_zip.stats import CompressionStats
+
+
+def test_saved_bytes() -> None:
+    stats = CompressionStats(
+        files_count=10,
+        original_size=1000,
+        compressed_size=600,
+        elapsed_time=1.5,
+    )
+
+    assert stats.saved_bytes == 400
+
+
+def test_compression_ratio() -> None:
+    stats = CompressionStats(
+        files_count=10,
+        original_size=1000,
+        compressed_size=600,
+        elapsed_time=1.5,
+    )
+
+    assert stats.compression_ratio == 40.0
+
+
+def test_compression_ratio_with_empty_input() -> None:
+    stats = CompressionStats(
+        files_count=0,
+        original_size=0,
+        compressed_size=0,
+        elapsed_time=0.0,
+    )
+
+    assert stats.compression_ratio == 0.0
