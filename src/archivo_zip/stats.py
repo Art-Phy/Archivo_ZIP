@@ -34,3 +34,16 @@ class CompressionResult:
 
     files: list[Path]
     stats: CompressionStats
+
+
+def format_size(size_bytes: int) -> str:
+    """Convert bytes into a human-readable size"""
+    size = float(size_bytes)
+
+    for unit in ("B", "KB", "MB", "GB"):
+        if size < 1024:
+            return f"{size:.1f} {unit}"
+
+        size /= 1024
+
+    return f"{size:.1f} TB"

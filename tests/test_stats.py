@@ -1,7 +1,7 @@
 
 from pathlib import Path
 
-from archivo_zip.stats import CompressionResult, CompressionStats
+from archivo_zip.stats import CompressionResult, CompressionStats, format_size
 
 
 def test_saved_bytes() -> None:
@@ -57,3 +57,15 @@ def test_compression_result() -> None:
 
     assert result.files == files
     assert result.stats == stats
+
+
+def test_format_size_bytes() -> None:
+    assert format_size(500) == "500.0 B"
+
+
+def test_format_size_kilobytes() -> None:
+    assert format_size(2048) == "2.0 KB"
+
+
+def test_format_size_megabytes() -> None:
+    assert format_size(1024 * 1024) == "1.0 MB"
