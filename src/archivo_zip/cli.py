@@ -120,14 +120,14 @@ def run_interactive_mode() -> bool:
         print("\nCompression cancelled.\n")
         return True
 
-    compressed_files = compress_files(
+    result = compress_files(
         input_paths,
         output_zip,
         recursive=recursive,
         use_default_excludes=use_default_excludes,
     )
 
-    print_results(input_paths, compressed_files, output_zip)
+    print_results(input_paths, result.files, output_zip)
     return True
 
 
@@ -137,8 +137,19 @@ def run_cli_mode(files: list[str], output: str, recursive: bool = False, exclude
     input_paths = [Path(file).expanduser().resolve() for file in files]
     output_zip = normalize_output_zip(output)
 
-    compressed_files = compress_files(input_paths, output_zip, recursive=recursive, exclude_patterns=exclude_patterns, use_default_excludes=use_default_excludes)
-    print_results(input_paths, compressed_files, output_zip)
+    result = compress_files(
+        input_paths,
+        output_zip,
+        recursive=recursive,
+        exclude_patterns=exclude_patterns,
+        use_default_excludes=use_default_excludes,
+    )
+
+    print_results(
+        input_paths,
+        result.files,
+        output_zip,
+    )
 
 
 

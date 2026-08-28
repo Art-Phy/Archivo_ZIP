@@ -7,7 +7,7 @@ from tqdm import tqdm
 from fnmatch import fnmatch
 from time import perf_counter
 
-from archivo_zip.stats import CompressionStats
+from archivo_zip.stats import CompressionResult, CompressionStats
 
 
 DEFAULT_EXCLUDE_PATTERNS = [
@@ -108,7 +108,7 @@ def get_archive_name(file_path: Path, input_paths: list[Path], recursive: bool=F
 
 
 
-def compress_files(input_paths: list[Path], output_zip: Path, recursive: bool = False, exclude_patterns: list[str] | None = None, use_default_excludes: bool = True) -> list[Path]:
+def compress_files(input_paths: list[Path], output_zip: Path, recursive: bool = False, exclude_patterns: list[str] | None = None, use_default_excludes: bool = True) -> CompressionResult:
     """
     Compress valid files into a ZIP archive.
 
@@ -147,4 +147,7 @@ def compress_files(input_paths: list[Path], output_zip: Path, recursive: bool = 
         elapsed_time=elapsed_time,
     )
 
-    return compressed_files
+    return CompressionResult(
+        files=compressed_files,
+        stats=stats,
+    )

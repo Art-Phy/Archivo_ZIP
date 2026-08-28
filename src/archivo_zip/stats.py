@@ -2,6 +2,7 @@
 """Compression statistics utilities."""
 
 from dataclasses import dataclass
+from pathlib import Path
 
 
 @dataclass
@@ -25,3 +26,11 @@ class CompressionStats:
             return 0.0
 
         return (self.saved_bytes / self.original_size) * 100
+
+
+@dataclass
+class CompressionResult:
+    """Store the result of a compression operation"""
+
+    files: list[Path]
+    stats: CompressionStats

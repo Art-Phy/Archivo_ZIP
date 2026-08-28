@@ -1,5 +1,7 @@
 
-from archivo_zip.stats import CompressionStats
+from pathlib import Path
+
+from archivo_zip.stats import CompressionResult, CompressionStats
 
 
 def test_saved_bytes() -> None:
@@ -33,3 +35,25 @@ def test_compression_ratio_with_empty_input() -> None:
     )
 
     assert stats.compression_ratio == 0.0
+
+
+def test_compression_result() -> None:
+    stats = CompressionStats(
+        files_count=2,
+        original_size=1000,
+        compressed_size=600,
+        elapsed_time=1.5,
+    )
+
+    files = [
+        Path("file1.txt"),
+        Path("file2.txt"),
+    ]
+
+    result = CompressionResult(
+        files=files,
+        stats=stats,
+    )
+
+    assert result.files == files
+    assert result.stats == stats

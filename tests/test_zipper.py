@@ -12,9 +12,13 @@ def test_compress_single_file(tmp_path: Path) -> None:
 
     output_zip = tmp_path / "result.zip"
 
-    compressed_files = compress_files([source_file], output_zip)
+    result = compress_files([source_file], output_zip)
 
-    assert compressed_files == [source_file]
+    assert result.files == [source_file]
+    assert result.stats.files_count == 1
+    assert result.stats.original_size == source_file.stat().st_size
+    assert result.stats.compressed_size == output_zip.stat().st_size
+    assert result.stats.elapsed_time >= 0
     assert output_zip.exists()
 
     with ZipFile(output_zip, "r") as zip_file:
@@ -32,9 +36,9 @@ def test_compress_multiple_files(tmp_path: Path) -> None:
 
     output_zip = tmp_path / "files.zip"
 
-    compressed_files = compress_files([file_one, file_two], output_zip)
+    result = compress_files([file_one, file_two], output_zip)
 
-    assert compressed_files == [file_one, file_two]
+    assert result.files == [file_one, file_two]
 
     with ZipFile(output_zip, "r") as zip_file:
         assert sorted(zip_file.namelist()) == ["one.txt", "two.txt"]
@@ -49,9 +53,9 @@ def test_ignore_missing_files(tmp_path: Path) -> None:
 
     output_zip = tmp_path / "result.zip"
 
-    compressed_files = compress_files([existing_file, missing_file], output_zip)
+    result  = compress_files([existing_file, missing_file], output_zip)
 
-    assert compressed_files == [existing_file]
+    assert result.files == [existing_file]
 
     with ZipFile(output_zip, "r") as zip_file:
         assert zip_file.namelist() == ["existing.txt"]
@@ -64,9 +68,9 @@ def test_create_output_directory_if_missing(tmp_path: Path) -> None:
 
     output_zip = tmp_path / "nested" / "folder" / "result.zip"
 
-    compressed_files = compress_files([source_file], output_zip)
+    result = compress_files([source_file], output_zip)
 
-    assert compressed_files == [source_file]
+    assert result.files == [source_file]
     assert output_zip.exists()
 
 
