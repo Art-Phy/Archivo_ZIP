@@ -27,6 +27,17 @@ class CompressionStats:
 
         return (self.saved_bytes / self.original_size) * 100
 
+    @property
+    def size_change_percentage(self) -> float:
+        """Return the percentage change between original and compressed sized"""
+        if self.original_size == 0:
+            return 0.0
+
+        return(
+            (self.compressed_size - self.original_size)
+            / self.original_size
+        ) * 100
+
 
 @dataclass
 class CompressionResult:

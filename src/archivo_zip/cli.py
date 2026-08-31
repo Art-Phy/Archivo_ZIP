@@ -205,7 +205,12 @@ def print_statistics(stats: CompressionStats) -> None:
     print(f"Files:          {stats.files_count}")
     print(f"Original size:  {format_size(stats.original_size)}")
     print(f"ZIP size:       {format_size(stats.compressed_size)}")
-    print(f"Space saved:    {stats.compression_ratio:.1f}%")
+
+    if stats.compressed_size <= stats.original_size:
+        print(f"Space saved:    {stats.compression_ratio:.1f}%")
+    else:
+        print(f"Size increase:  {stats.size_change_percentage:.1f}%")
+
     print(f"Time:           {stats.elapsed_time:.2f} s")
 
 

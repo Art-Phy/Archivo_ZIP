@@ -69,3 +69,36 @@ def test_format_size_kilobytes() -> None:
 
 def test_format_size_megabytes() -> None:
     assert format_size(1024 * 1024) == "1.0 MB"
+
+
+def test_size_change_percentage_when_compressed() -> None:
+    stats = CompressionStats(
+        files_count=1,
+        original_size=1000,
+        compressed_size=600,
+        elapsed_time=1.0,
+    )
+
+    assert stats.size_change_percentage == -40.0
+
+
+def test_size_change_percentage_when_larger() -> None:
+    stats = CompressionStats(
+        files_count=1,
+        original_size=100,
+        compressed_size=120,
+        elapsed_time=1.0,
+    )
+
+    assert stats.size_change_percentage == 20.0
+
+
+def test_size_change_percentage_with_empty_input() -> None:
+    stats = CompressionStats(
+        files_count=0,
+        original_size=0,
+        compressed_size=0,
+        elapsed_time=0.0,
+    )
+
+    assert stats.size_change_percentage == 0.0

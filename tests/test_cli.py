@@ -65,3 +65,22 @@ def test_print_statistics(capsys) -> None:
     assert "ZIP size:       512.0 KB" in output
     assert "Space saved:    50.0%" in output
     assert "Time:           2.50 s" in output
+
+
+
+def test_print_statistics_shows_size_increase(capsys) -> None:
+    stats = CompressionStats(
+        files_count=1,
+        original_size=100,
+        compressed_size=120,
+        elapsed_time=1.0,
+    )
+
+    print_statistics(stats)
+
+    output = capsys.readouterr().out
+
+    assert "Original size:  100.0 B" in output
+    assert "ZIP size:       120.0 B" in output
+    assert "Size increase:  20.0%" in output
+    assert "Space saved:" not in output
