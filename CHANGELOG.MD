@@ -5,6 +5,28 @@ Todos los cambios relevantes de este proyecto serán documentados aquí.
 
 ---
 
+### [1.8.0] - 31.08.2026
+
+#### Added
+- Compression statistics after each operation.
+- `CompressionStats` model for storing compression metrics.
+- `CompressionResult` model for returning compressed files and statistics together.
+- Original file size calculation.
+- Final ZIP size calculation.
+- Compression elapsed time measurement using `perf_counter()`.
+- Compression ratio calculation.
+- Size increase detection when the resulting ZIP is larger than the original content.
+- Human-readable size formatting using B, KB, MB, GB and TB.
+- Automated tests for compression statistics and CLI statistics output.
+
+#### Changed
+- `compress_files()` now returns a structured `CompressionResult`.
+- CLI and interactive modes now display compression statistics after successful operations.
+- Improved compression result reporting.
+- Project license changed from MIT to All Rights Reserved.
+
+---
+
 ### [1.7.0] - 10.07.2026
 
 #### Added
