@@ -5,6 +5,9 @@ from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
 from tqdm import tqdm
 from fnmatch import fnmatch
+from time import perf_counter
+
+from archivo_zip.stats import CompressionResult, CompressionStats
 
 
 DEFAULT_EXCLUDE_PATTERNS = [
@@ -105,7 +108,7 @@ def get_archive_name(file_path: Path, input_paths: list[Path], recursive: bool=F
 
 
 
-def compress_files(input_paths: list[Path], output_zip: Path, recursive: bool = False, exclude_patterns: list[str] | None = None, use_default_excludes: bool = True) -> list[Path]:
+def compress_files(input_paths: list[Path], output_zip: Path, recursive: bool = False, exclude_patterns: list[str] | None = None, use_default_excludes: bool = True) -> CompressionResult:
     """
     Compress valid files into a ZIP archive.
 
@@ -120,9 +123,12 @@ def compress_files(input_paths: list[Path], output_zip: Path, recursive: bool = 
     compressed_files: list[Path] = []
     
     patterns = build_exclude_patterns(exclude_patterns, use_defaults=use_default_excludes)
-    files_to_compress = collect_files(input_paths, recursive=recursive, exclude_patterns=exclude_patterns)
+    files_to_compress = collect_files(input_paths, recursive=recursive, exclude_patterns=patterns)
+    original_size = sum(file_path.stat().st_size for file_path in files_to_compress)
 
     output_zip.parent.mkdir(parents=True, exist_ok=True)
+
+    start_time = perf_counter()
 
     with ZipFile(output_zip, "w", compression=ZIP_DEFLATED) as zip_file:
         for file_path in tqdm(
@@ -131,4 +137,17 @@ def compress_files(input_paths: list[Path], output_zip: Path, recursive: bool = 
             zip_file.write(file_path, arcname=get_archive_name(file_path, input_paths, recursive=recursive),)
             compressed_files.append(file_path)
 
-    return compressed_files
+    elapsed_time = perf_counter() - start_time
+    compressed_size = output_zip.stat().st_size
+
+    stats = CompressionStats(
+        files_count=len(compressed_files),
+        original_size=original_size,
+        compressed_size=compressed_size,
+        elapsed_time=elapsed_time,
+    )
+
+    return CompressionResult(
+        files=compressed_files,
+        stats=stats,
+    )

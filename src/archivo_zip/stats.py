@@ -1,0 +1,60 @@
+
+"""Compression statistics utilities."""
+
+from dataclasses import dataclass
+from pathlib import Path
+
+
+@dataclass
+class CompressionStats:
+    """Store statistics for a compression operation."""
+
+    files_count: int
+    original_size: int
+    compressed_size: int
+    elapsed_time: float
+
+    @property
+    def saved_bytes(self) -> int:
+        """Return the number of bytes saved by compression."""
+        return max(0, self.original_size - self.compressed_size)
+
+    @property
+    def compression_ratio(self) -> float:
+        """Return the percentage of space saved."""
+        if self.original_size == 0:
+            return 0.0
+
+        return (self.saved_bytes / self.original_size) * 100
+
+    @property
+    def size_change_percentage(self) -> float:
+        """Return the percentage change between original and compressed sized"""
+        if self.original_size == 0:
+            return 0.0
+
+        return(
+            (self.compressed_size - self.original_size)
+            / self.original_size
+        ) * 100
+
+
+@dataclass
+class CompressionResult:
+    """Store the result of a compression operation"""
+
+    files: list[Path]
+    stats: CompressionStats
+
+
+def format_size(size_bytes: int) -> str:
+    """Convert bytes into a human-readable size"""
+    size = float(size_bytes)
+
+    for unit in ("B", "KB", "MB", "GB"):
+        if size < 1024:
+            return f"{size:.1f} {unit}"
+
+        size /= 1024
+
+    return f"{size:.1f} TB"
